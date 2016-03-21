@@ -51,20 +51,20 @@ public class RepositoryTenantIntegrationTest {
 
 	@Test
 	public void testWithTenantInFirst() {
-		final List<Recurso> result = repository.withTenant(tenantValue).from(Aplicacao.class).list();
+		final List<Recurso> result = repository.tenantValue(tenantValue).from(Aplicacao.class).list();
 		assertEquals(1, result.size());
 	}
 
 	@Test
 	public void testWithTenantInSecond() {
-		final List<Recurso> result = repository.withTenant(tenantValue).from(Recurso.class).list();
+		final List<Recurso> result = repository.tenantValue(tenantValue).from(Recurso.class).list();
 		assertEquals(1, result.size());
 	}
 
 	@Test
 	public void testWithTenantInJoin() {
 		final List<Operacao> result = repository
-										.withTenant(tenantValue)
+										.tenantValue(tenantValue)
 										.from(Operacao.class)
 										.where(0l, GREATER_THAN_OR_EQUAL, recurso, id).list();
 		assertEquals(1, result.size());
@@ -72,7 +72,7 @@ public class RepositoryTenantIntegrationTest {
 
 	@Test
 	public void testWithoutTenant() {
-		final List<Operacao> result = repository.withTenant(tenantValue).from(Operacao.class).list();
+		final List<Operacao> result = repository.tenantValue(tenantValue).from(Operacao.class).list();
 		assertEquals(2, result.size());
 	}
 }

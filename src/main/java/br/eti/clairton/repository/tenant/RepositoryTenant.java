@@ -1,6 +1,5 @@
 package br.eti.clairton.repository.tenant;
 
-import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 import javax.enterprise.context.Dependent;
@@ -42,13 +41,13 @@ public class RepositoryTenant extends Repository {
 		super(em);
 		this.tenant = tenant;
 		if (tenantValue != null) {
-			withTenant(tenantValue.get());
+			tenantValue(tenantValue.get());
 		}
 	}
 
-	public Repository withTenant(final Object value) {
+	public Repository tenantValue(final Object value) {
 		this.tenantValue = value;
-		this.isTenant = FALSE;
+		this.isTenant = TRUE;
 		return this;
 	}
 	
