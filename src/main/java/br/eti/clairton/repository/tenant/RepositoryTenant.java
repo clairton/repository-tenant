@@ -1,5 +1,8 @@
 package br.eti.clairton.repository.tenant;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -24,6 +27,8 @@ public class RepositoryTenant extends Repository {
 
 	private final TenantBuilder tenant;
 
+	private Boolean isTenant = TRUE;
+
 	@Deprecated
 	protected RepositoryTenant() {
 		this(null, null, null);
@@ -43,13 +48,20 @@ public class RepositoryTenant extends Repository {
 
 	public Repository withTenant(final Object value) {
 		this.tenantValue = value;
+		this.isTenant = FALSE;
 		return this;
 	}
 	
+	public Repository tenant(final Boolean isTenant){
+		this.isTenant = isTenant;
+		return this;
+	}
 
 	public <T extends Model> Repository from(@NotNull final Class<T> type) {
 		super.from(type);
-		this.joinner = new JoinnerTenant(tenant, builder, from, tenantValue);
+		if(isTenant){			
+			this.joinner = new JoinnerTenant(tenant, builder, from, tenantValue);
+		}
 		try {
 			predicates.add(tenant.run(builder, from, tenantValue));
 		} catch (final TenantNotFound e) {}
