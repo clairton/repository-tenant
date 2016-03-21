@@ -12,13 +12,13 @@ import br.eti.clairton.tenant.TenantNotFound;
 @Vetoed
 public class JoinnerTenant extends Joinner{
 	private final TenantBuilder tenant;
-	private Object value;
+	private final Value<?> value;
 
 	public JoinnerTenant(
 			final TenantBuilder tenant, 
 			final CriteriaBuilder builder, 
 			final From<?, ?> from,
-			final Object value) {
+			final Value<?> value) {
 		super(builder, from);
 		this.tenant = tenant;
 		this.value = value; 
@@ -28,7 +28,7 @@ public class JoinnerTenant extends Joinner{
 	public javax.persistence.criteria.Predicate join(final Predicate predicate) {
 		final javax.persistence.criteria.Predicate joinPredicate = super.join(predicate);
 		try {
-			final javax.persistence.criteria.Predicate tenantPredicate = tenant.run(builder, fromLast, value);
+			final javax.persistence.criteria.Predicate tenantPredicate = tenant.run(builder, fromLast, value.get());
 			final javax.persistence.criteria.Predicate completePredicate = builder.and(joinPredicate, tenantPredicate);
 			return completePredicate;
 		} catch (final TenantNotFound e) {

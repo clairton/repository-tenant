@@ -5,7 +5,7 @@ package br.eti.clairton.repository.tenant;
  * 
  * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
  */
-public interface TenantValue<T> {
+public interface Value<T> {
 
 	T get();
 }
