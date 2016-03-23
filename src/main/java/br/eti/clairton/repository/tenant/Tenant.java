@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * Annotação Interceptar construção de controllers para adicionar tenant.
+ * Qualifier tenant.
  * 
  * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
  */

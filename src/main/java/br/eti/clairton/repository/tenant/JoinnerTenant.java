@@ -3,17 +3,33 @@ package br.eti.clairton.repository.tenant;
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
+import javax.persistence.criteria.Predicate;
 
 import br.eti.clairton.repository.Joinner;
-import br.eti.clairton.repository.Predicate;
 import br.eti.clairton.tenant.TenantBuilder;
 import br.eti.clairton.tenant.TenantNotFound;
 
+/**
+ * Joinner by {@link br.eti.clairton.repository.Predicate} with tenant.
+ * 
+ * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
+ */
 @Vetoed
 public class JoinnerTenant extends Joinner{
 	private final TenantBuilder tenant;
 	private final Value<?> value;
 
+	/**
+	 * Constructor default.
+	 * 
+	 * @param tenant
+	 *            instance of {@link TenantBuilder}
+	 * 
+	 * @param builder
+	 *            instance of {@link CriteriaBuilder}
+	 * @param from
+	 *            instance of {@link From}
+	 */
 	public JoinnerTenant(
 			final TenantBuilder tenant, 
 			final CriteriaBuilder builder, 
@@ -24,12 +40,16 @@ public class JoinnerTenant extends Joinner{
 		this.value = value; 
 	}
 	
+	/**
+	 * {@inheritDoc}.<br/>
+	 * Concat {@link Predicate} of super.join with tenant.
+	 */
 	@Override
-	public javax.persistence.criteria.Predicate join(final Predicate predicate) {
-		final javax.persistence.criteria.Predicate joinPredicate = super.join(predicate);
+	public Predicate join(final br.eti.clairton.repository.Predicate predicate) {
+		final Predicate joinPredicate = super.join(predicate);
 		try {
-			final javax.persistence.criteria.Predicate tenantPredicate = tenant.run(builder, fromLast, value.get());
-			final javax.persistence.criteria.Predicate completePredicate = builder.and(joinPredicate, tenantPredicate);
+			final Predicate tenantPredicate = tenant.run(builder, fromLast, value.get());
+			final Predicate completePredicate = builder.and(joinPredicate, tenantPredicate);
 			return completePredicate;
 		} catch (final TenantNotFound e) {
 			return joinPredicate;

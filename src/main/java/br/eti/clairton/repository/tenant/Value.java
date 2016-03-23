@@ -7,5 +7,10 @@ package br.eti.clairton.repository.tenant;
  */
 public interface Value<T> {
 
+	/**
+	 * Mus me retrieve and return de tenant value.
+	 * 
+	 * @return value of tenant
+	 */
 	T get();
 }
