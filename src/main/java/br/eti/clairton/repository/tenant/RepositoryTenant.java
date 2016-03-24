@@ -104,7 +104,7 @@ public class RepositoryTenant extends Repository {
 			logger.debug("Tenant is able");
 			this.joinner = new JoinnerTenant(tenant, builder, from, tenantValue);
 			try {
-				predicates.add(tenant.run(builder, from, tenantValue.get()));
+				predicates.add(tenant.run(new TenantBuilderProxy(builder, joinner), from, tenantValue.get()));
 			} catch (final TenantNotFound e) {
 				logger.debug("TenantNotFound");
 			}

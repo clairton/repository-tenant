@@ -37,7 +37,7 @@ public class JoinnerTenant extends Joinner{
 			final Value<?> value) {
 		super(builder, from);
 		this.tenant = tenant;
-		this.value = value; 
+		this.value = value;
 	}
 	
 	/**
