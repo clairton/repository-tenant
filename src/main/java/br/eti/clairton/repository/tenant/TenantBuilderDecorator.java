@@ -11,39 +11,43 @@ import br.eti.clairton.tenant.TenantBuilder;
 import br.eti.clairton.tenant.Tenantable;
 
 @Vetoed
-public class TenantBuilderProxy extends TenantBuilder{
-	private final TenantBuilder builder;
-	private final Joinner joinner;
+public class TenantBuilderDecorator extends TenantBuilder{
+	private final TenantBuilder delegate;
+	private Joinner joinner;
 
-	public TenantBuilderProxy(TenantBuilder builder, Joinner joinner) {
+	public TenantBuilderDecorator(final TenantBuilder delegate, final Joinner joinner) {
 		super(null);
-		this.builder = builder;
+		this.delegate = delegate;
 		this.joinner = joinner;
 	}
 
 	public <T> Tenantable<T> get(final Instance<Tenantable<?>> instance){
 		@SuppressWarnings("unchecked")
-		final Tenantable<T> t = (Tenantable<T>) new TenantableProxy<>(joinner, builder.get(instance));
+		final Tenantable<T> t = (Tenantable<T>) new TenantableDecorator<>(joinner, delegate.get(instance));
 		return t;
 	}
 
 	public Boolean exist(Class<?> klazz) {
-		return builder.exist(klazz);
+		return delegate.exist(klazz);
 	}
 
 	public <T, Y> Predicate run(CriteriaBuilder builder, From<?, T> from, Object tenantValue) {
-		return this.builder.run(builder, from, tenantValue);
+		return this.delegate.run(builder, from, tenantValue);
 	}
 
 	public int hashCode() {
-		return builder.hashCode();
+		return delegate.hashCode();
 	}
 
 	public boolean equals(Object obj) {
-		return builder.equals(obj);
+		return delegate.equals(obj);
 	}
 
 	public String toString() {
-		return builder.toString();
+		return delegate.toString();
+	}
+	
+	public void setJoinner(final Joinner joinner) {
+		this.joinner = joinner;
 	}
 }

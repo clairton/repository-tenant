@@ -28,9 +28,10 @@ public class RepositoryTenant extends Repository {
 
 	private final Logger logger = getLogger(RepositoryTenant.class);
 
+	private final TenantBuilderDecorator tenant;
+
 	private Value<?> tenantValue;
 
-	private final TenantBuilder tenant;
 
 	private Boolean isTenant = TRUE;
 
@@ -58,7 +59,7 @@ public class RepositoryTenant extends Repository {
 			@NotNull final TenantBuilder tenant,
 			@NotNull final Value<?> tenantValue) {
 		super(manager);
-		this.tenant = tenant;
+		this.tenant = new TenantBuilderDecorator(tenant, joinner);
 		this.tenantValue = tenantValue;
 	}
 
@@ -103,8 +104,9 @@ public class RepositoryTenant extends Repository {
 		if (isTenant) {
 			logger.debug("Tenant is able");
 			this.joinner = new JoinnerTenant(tenant, builder, from, tenantValue);
+			tenant.setJoinner(joinner);
 			try {
-				predicates.add(tenant.run(new TenantBuilderProxy(builder, joinner), from, tenantValue.get()));
+				predicates.add(tenant.run(builder, from, tenantValue.get()));
 			} catch (final TenantNotFound e) {
 				logger.debug("TenantNotFound");
 			}

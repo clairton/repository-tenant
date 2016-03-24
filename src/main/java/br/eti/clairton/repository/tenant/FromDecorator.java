@@ -30,12 +30,12 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import br.eti.clairton.repository.Joinner;
 
-public class FromProxy<Z, X> implements From<Z, X> {
+public class FromDecorator<Z, X> implements From<Z, X> {
 	private final From<Z, X> from;
 	private final Joinner joinner;
 	private final CriteriaBuilder builder;
 
-	public FromProxy(final From<Z, X> from, final Joinner joinner, final CriteriaBuilder builder) {
+	public FromDecorator(final From<Z, X> from, final Joinner joinner, final CriteriaBuilder builder) {
 		super();
 		this.from = from;
 		this.joinner = joinner;
