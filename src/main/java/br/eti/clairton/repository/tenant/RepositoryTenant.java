@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.Logger;
 
-import br.eti.clairton.repository.Model;
 import br.eti.clairton.repository.Repository;
 import br.eti.clairton.tenant.TenantBuilder;
 import br.eti.clairton.tenant.TenantNotFound;
@@ -99,7 +98,7 @@ public class RepositoryTenant extends Repository {
 	 * Call de super.from and if is tenant, add tenant {@link Predicate}
 	 */
 	@Override
-	public <T extends Model> Repository from(@NotNull final Class<T> type) {
+	public <T> Repository from(@NotNull final Class<T> type) {
 		super.from(type);
 		if (isTenant) {
 			logger.debug("Tenant is able");
