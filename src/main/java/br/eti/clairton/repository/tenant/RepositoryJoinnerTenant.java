@@ -15,7 +15,7 @@ import br.eti.clairton.tenant.TenantNotFound;
  * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
  */
 @Vetoed
-public class JoinnerTenant extends Joinner{
+public class RepositoryJoinnerTenant extends Joinner{
 	private final TenantBuilder tenant;
 	private final Value<?> value;
 
@@ -30,7 +30,7 @@ public class JoinnerTenant extends Joinner{
 	 * @param from
 	 *            instance of {@link From}
 	 */
-	public JoinnerTenant(
+	public RepositoryJoinnerTenant(
 			final TenantBuilder tenant, 
 			final CriteriaBuilder builder, 
 			final From<?, ?> from,

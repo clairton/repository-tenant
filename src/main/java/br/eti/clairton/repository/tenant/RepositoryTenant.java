@@ -27,7 +27,7 @@ public class RepositoryTenant extends Repository {
 
 	private final Logger logger = getLogger(RepositoryTenant.class);
 
-	private final TenantBuilderDecorator tenant;
+	private final RepositoryTenantBuilder tenant;
 
 	private Value<?> tenantValue;
 
@@ -55,10 +55,10 @@ public class RepositoryTenant extends Repository {
 	@Inject
 	public RepositoryTenant(
 			@NotNull final EntityManager manager,
-			@NotNull final TenantBuilder tenant,
+			@NotNull final RepositoryTenantBuilder tenant,
 			@NotNull final Value<?> tenantValue) {
 		super(manager);
-		this.tenant = new TenantBuilderDecorator(tenant, joinner);
+		this.tenant = tenant;
 		this.tenantValue = tenantValue;
 	}
 
@@ -102,10 +102,10 @@ public class RepositoryTenant extends Repository {
 		super.from(type);
 		if (isTenant) {
 			logger.debug("Tenant is able");
-			this.joinner = new JoinnerTenant(tenant, builder, from, tenantValue);
-			tenant.setJoinner(joinner);
 			try {
-				predicates.add(tenant.run(builder, from, tenantValue.get()));
+				final Object value = tenantValue.get();
+				final Predicate predicate = tenant.run(joinner, builder, from, value);
+				predicates.add(predicate);
 			} catch (final TenantNotFound e) {
 				logger.debug("TenantNotFound");
 			}

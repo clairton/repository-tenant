@@ -75,4 +75,14 @@ public class RepositoryTenantIntegrationTest {
 		final List<Operacao> result = repository.tenantValue(tenantValue).from(Operacao.class).list();
 		assertEquals(2, result.size());
 	}
+
+	@Test
+	public void testWithTwoTenant() {
+		final List<Recurso> result = repository
+										.tenantValue(tenantValue)
+										.from(Recurso.class)
+										.where("Teste", Recurso_.aplicacao, Aplicacao_.nome)
+										.list();
+		assertEquals(1, result.size());
+	}
 }
