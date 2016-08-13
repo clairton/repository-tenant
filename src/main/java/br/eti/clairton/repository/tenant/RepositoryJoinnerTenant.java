@@ -16,9 +16,17 @@ import br.eti.clairton.tenant.TenantNotFound;
  */
 @Vetoed
 public class RepositoryJoinnerTenant extends Joinner{
-	private final TenantBuilder tenant;
+	private final RepositoryTenantBuilder tenant;
 	private final Value<?> value;
 
+	/**
+	 * CDI only.
+	 */
+	@Deprecated
+	public RepositoryJoinnerTenant() {
+		this(null, null, null, null);
+	}
+	
 	/**
 	 * Constructor default.
 	 * 
@@ -29,9 +37,12 @@ public class RepositoryJoinnerTenant extends Joinner{
 	 *            instance of {@link CriteriaBuilder}
 	 * @param from
 	 *            instance of {@link From}
+	 * 
+	 * @param value
+	 * 			 value of tenant
 	 */
 	public RepositoryJoinnerTenant(
-			final TenantBuilder tenant, 
+			final RepositoryTenantBuilder tenant, 
 			final CriteriaBuilder builder, 
 			final From<?, ?> from,
 			final Value<?> value) {
@@ -48,7 +59,7 @@ public class RepositoryJoinnerTenant extends Joinner{
 	public Predicate join(final br.eti.clairton.repository.Predicate predicate) {
 		final Predicate joinPredicate = super.join(predicate);
 		try {
-			final Predicate tenantPredicate = tenant.run(builder, fromLast, value.get());
+			final Predicate tenantPredicate = tenant.run(this, builder, fromLast, value.get());
 			final Predicate completePredicate = builder.and(joinPredicate, tenantPredicate);
 			return completePredicate;
 		} catch (final TenantNotFound e) {

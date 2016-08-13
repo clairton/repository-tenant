@@ -8,7 +8,7 @@ import br.eti.clairton.repository.Joinner;
 import br.eti.clairton.tenant.Tenantable;
 
 /**
- * Constract for tenant model entity.
+ * Constract for tenant in repository.
  * 
  * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
  *
@@ -32,8 +32,11 @@ public abstract class RepositoryTenantable<T> extends Tenantable<T>{
 	 */
 	public abstract Predicate add(final Joinner joinner, final CriteriaBuilder builder, From<?, T> from, final Object value);
 	
+
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc}</br>
+	 * 
+	 * @return @throws {@link UnsupportedOperationException}
 	 */
 	@Override
 	public Predicate add(final CriteriaBuilder builder, final From<?, T> from, final Object value) {

@@ -20,7 +20,7 @@ import br.eti.clairton.tenant.TenantType;
 import br.eti.clairton.tenant.Tenantable;
 
 @Specializes
-public class RepositoryTenantBuilder extends TenantBuilder{
+public class RepositoryTenantBuilder extends TenantBuilder {
 	private static final Logger logger = getLogger(TenantBuilder.class);
 	private final Instance<RepositoryTenantable<?>> tenants;
 
@@ -43,7 +43,11 @@ public class RepositoryTenantBuilder extends TenantBuilder{
 		super(null);
 		this.tenants = tenants;
 	}
-
+	
+	@Override
+	public <T, Y> Predicate run(final CriteriaBuilder builder, @NotNull final From<?, T> from, final Object value) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Add the tenant for de {@link From}, id exists.
@@ -52,11 +56,11 @@ public class RepositoryTenantBuilder extends TenantBuilder{
 	 *            instance of {@link CriteriaBuilder}
 	 * @param from
 	 *            instance of de current {@link From}
-	 * @param tenantValue
+	 * @param value
 	 *            value of the tenant
 	 * @return {@link Predicate} of the tenant for the {@link From} param
 	 */
-	public <T, Y> Predicate run(final Joinner joinner, final CriteriaBuilder builder, @NotNull final From<?, T> from, final Object tenantValue) {
+	public <T, Y> Predicate run(final Joinner joinner, final CriteriaBuilder builder, @NotNull final From<?, T> from, final Object value) {
 		final Class<?> klazz = (Class<?>) from.getJavaType();
 		final TenantType qualifier = getType(klazz);
 		final Instance<RepositoryTenantable<?>> instance = tenants.select(qualifier);
@@ -66,18 +70,23 @@ public class RepositoryTenantBuilder extends TenantBuilder{
 		} else {
 			logger.debug("Adicionando Tenant para {}", klazz.getSimpleName());
 			final RepositoryTenantable<T> tenant = getInstance(instance);
-			return tenant.add(joinner, builder, from, tenantValue);
+			return tenant.add(joinner, builder, from, value);
 		}
 	}
 	
-	protected <T> RepositoryTenantable<T> getInstance(final Instance<RepositoryTenantable<?>> instance){
+	/**
+	 * {@inheritDoc}</br>
+	 * 
+	 * @return @throws {@link UnsupportedOperationException}
+	 */
+	public <T> Predicate run(final Tenantable<T> tenant, final CriteriaBuilder builder, final From<?, T> from, final Object value) {
+		throw new UnsupportedOperationException();
+	}
+
+	protected <T> RepositoryTenantable<T> getInstance(final Instance<RepositoryTenantable<?>> instance) {
 		@SuppressWarnings("unchecked")
 		final RepositoryTenantable<T> t = (RepositoryTenantable<T>) instance.get();
 		final RepositoryTenantable<T> tenant = t;
 		return tenant;
-	}
-	
-	public <T>Predicate run(final Tenantable<T> tenant, final CriteriaBuilder builder, final From<?, T> from, final Object value){
-		throw new UnsupportedOperationException();
 	}
 }

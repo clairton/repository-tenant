@@ -16,7 +16,7 @@ import br.eti.clairton.tenant.TenantBuilder;
 import br.eti.clairton.tenant.TenantNotFound;
 
 /**
- * Devolve um Repository que recuperara valore usando tenanty.
+ * A Tenant Repository.
  * 
  * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
  */
@@ -38,7 +38,7 @@ public class RepositoryTenant extends Repository {
 	 * CDI only.
 	 */
 	@Deprecated
-	protected RepositoryTenant() {
+	public RepositoryTenant() {
 		this(null, null, null);
 	}
 
@@ -100,6 +100,7 @@ public class RepositoryTenant extends Repository {
 	@Override
 	public <T> Repository from(@NotNull final Class<T> type) {
 		super.from(type);
+		this.joinner = new RepositoryJoinnerTenant(tenant, builder, from, tenantValue);
 		if (isTenant) {
 			logger.debug("Tenant is able");
 			try {
