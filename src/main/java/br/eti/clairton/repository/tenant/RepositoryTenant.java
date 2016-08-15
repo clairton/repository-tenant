@@ -100,8 +100,8 @@ public class RepositoryTenant extends Repository {
 	@Override
 	public <T> Repository from(@NotNull final Class<T> type) {
 		super.from(type);
-		this.joinner = new RepositoryJoinnerTenant(tenant, builder, from, tenantValue);
 		if (isTenant) {
+			this.joinner = new RepositoryJoinnerTenant(tenant, builder, from, tenantValue);
 			logger.debug("Tenant is able");
 			try {
 				final Object value = tenantValue.get();
