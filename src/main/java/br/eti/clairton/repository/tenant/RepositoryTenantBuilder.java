@@ -45,7 +45,7 @@ public class RepositoryTenantBuilder extends TenantBuilder {
 	}
 	
 	@Override
-	public <T, Y> Predicate run(final CriteriaBuilder builder, @NotNull final From<?, T> from, final Object value) {
+	public <T, Y> Predicate run(@NotNull final CriteriaBuilder builder, @NotNull final From<?, T> from, final Object value) {
 		throw new UnsupportedOperationException();
 	}
 
