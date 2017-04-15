@@ -1,15 +1,15 @@
 package br.eti.clairton.repository.tenant;
 
 import static java.lang.Boolean.TRUE;
-import static org.apache.logging.log4j.LogManager.getLogger;
+import static java.util.logging.Logger.getLogger;
+
+import java.util.logging.Logger;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.Predicate;
 import javax.validation.constraints.NotNull;
-
-import org.apache.logging.log4j.Logger;
 
 import br.eti.clairton.repository.Repository;
 import br.eti.clairton.tenant.TenantBuilder;
@@ -18,14 +18,14 @@ import br.eti.clairton.tenant.TenantNotFound;
 /**
  * A Tenant Repository.
  * 
- * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
+ * @author Clairton Rodrigo Heinzen clairton.rodrigo@gmail.com
  */
 @Tenant
 @Dependent
 public class RepositoryTenant extends Repository {
 	private static final long serialVersionUID = 1L;
 
-	private final Logger logger = getLogger(RepositoryTenant.class);
+	private final Logger logger = getLogger(RepositoryTenant.class.getSimpleName());
 
 	private final RepositoryTenantBuilder tenant;
 
@@ -93,7 +93,7 @@ public class RepositoryTenant extends Repository {
 	}
 
 	/**
-	 * {@inheritDoc}. <br/>
+	 * {@inheritDoc}
 	 * 
 	 * Call de super.from and if is tenant, add tenant {@link Predicate}
 	 */
@@ -102,13 +102,13 @@ public class RepositoryTenant extends Repository {
 		super.from(type);
 		if (isTenant) {
 			this.joinner = new RepositoryJoinnerTenant(tenant, builder, from, tenantValue);
-			logger.debug("Tenant is able");
+			logger.fine("Tenant is able");
 			try {
 				final Object value = tenantValue.get();
 				final Predicate predicate = tenant.run(joinner, builder, from, value);
 				predicates.add(predicate);
 			} catch (final TenantNotFound e) {
-				logger.debug("TenantNotFound");
+				logger.fine("TenantNotFound");
 			}
 		}
 		return this;

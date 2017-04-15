@@ -10,7 +10,7 @@ import br.eti.clairton.tenant.Tenantable;
 /**
  * Constract for tenant in repository.
  * 
- * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
+ * @author Clairton Rodrigo Heinzen clairton.rodrigo@gmail.com
  *
  * @param <T>
  *            type of model
@@ -33,12 +33,8 @@ public abstract class RepositoryTenantable<T> extends Tenantable<T>{
 	public abstract Predicate add(final Joinner joinner, final CriteriaBuilder builder, From<?, T> from, final Object value);
 	
 
-	/**
-	 * {@inheritDoc}</br>
-	 * 
-	 * @return @throws {@link UnsupportedOperationException}
-	 */
 	@Override
+	@Deprecated
 	public Predicate add(final CriteriaBuilder builder, final From<?, T> from, final Object value) {
 		throw new UnsupportedOperationException();
 	}

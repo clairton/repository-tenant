@@ -12,7 +12,7 @@ import br.eti.clairton.tenant.TenantNotFound;
 /**
  * Joinner by {@link br.eti.clairton.repository.Predicate} with tenant.
  * 
- * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
+ * @author Clairton Rodrigo Heinzen clairton.rodrigo@gmail.com
  */
 @Vetoed
 public class RepositoryJoinnerTenant extends Joinner{
@@ -52,7 +52,7 @@ public class RepositoryJoinnerTenant extends Joinner{
 	}
 	
 	/**
-	 * {@inheritDoc}.<br/>
+	 * {@inheritDoc}
 	 * Concat {@link Predicate} of super.join with tenant.
 	 */
 	@Override

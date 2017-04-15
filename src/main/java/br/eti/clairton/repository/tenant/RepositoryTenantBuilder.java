@@ -1,6 +1,9 @@
 package br.eti.clairton.repository.tenant;
 
-import static org.apache.logging.log4j.LogManager.getLogger;
+import static java.util.logging.Level.FINE;
+import static java.util.logging.Logger.getLogger;
+
+import java.util.logging.Logger;
 
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
@@ -11,8 +14,6 @@ import javax.persistence.criteria.From;
 import javax.persistence.criteria.Predicate;
 import javax.validation.constraints.NotNull;
 
-import org.apache.logging.log4j.Logger;
-
 import br.eti.clairton.repository.Joinner;
 import br.eti.clairton.tenant.TenantBuilder;
 import br.eti.clairton.tenant.TenantNotFound;
@@ -21,7 +22,7 @@ import br.eti.clairton.tenant.Tenantable;
 
 @Specializes
 public class RepositoryTenantBuilder extends TenantBuilder {
-	private static final Logger logger = getLogger(TenantBuilder.class);
+	private static final Logger logger = getLogger(TenantBuilder.class.getSimpleName());
 	private final Instance<RepositoryTenantable<?>> tenants;
 
 	/**
@@ -45,7 +46,7 @@ public class RepositoryTenantBuilder extends TenantBuilder {
 	}
 	
 	@Override
-	public <T, Y> Predicate run(@NotNull final CriteriaBuilder builder, @NotNull final From<?, T> from, final Object value) {
+	public <T> Predicate run(@NotNull final CriteriaBuilder builder, @NotNull final From<?, T> from, final Object value) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -58,27 +59,24 @@ public class RepositoryTenantBuilder extends TenantBuilder {
 	 *            instance of de current {@link From}
 	 * @param value
 	 *            value of the tenant
+	 * @param <T> type of entity
 	 * @return {@link Predicate} of the tenant for the {@link From} param
 	 */
-	public <T, Y> Predicate run(final Joinner joinner, final CriteriaBuilder builder, @NotNull final From<?, T> from, final Object value) {
+	public <T> Predicate run(final Joinner joinner, final CriteriaBuilder builder, @NotNull final From<?, T> from, final Object value) {
 		final Class<?> klazz = (Class<?>) from.getJavaType();
 		final TenantType qualifier = getType(klazz);
 		final Instance<RepositoryTenantable<?>> instance = tenants.select(qualifier);
 		if (instance.isUnsatisfied()) {
-			logger.debug("Tenant para {} não encontrado", klazz.getSimpleName());
+			logger.log(FINE, "Tenant para {} não encontrado", klazz.getSimpleName());
 			throw new TenantNotFound();
 		} else {
-			logger.debug("Adicionando Tenant para {}", klazz.getSimpleName());
+			logger.log(FINE, "Adicionando Tenant para {}", klazz.getSimpleName());
 			final RepositoryTenantable<T> tenant = getInstance(instance);
 			return tenant.add(joinner, builder, from, value);
 		}
 	}
 	
-	/**
-	 * {@inheritDoc}</br>
-	 * 
-	 * @return @throws {@link UnsupportedOperationException}
-	 */
+	@Deprecated
 	public <T> Predicate run(final Tenantable<T> tenant, final CriteriaBuilder builder, final From<?, T> from, final Object value) {
 		throw new UnsupportedOperationException();
 	}

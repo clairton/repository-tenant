@@ -17,7 +17,7 @@ import javax.inject.Qualifier;
 /**
  * Qualifier tenant.
  * 
- * @author Clairton Rodrigo Heinzen<clairton.rodrigo@gmail.com>
+ * @author Clairton Rodrigo Heinzen clairton.rodrigo@gmail.com
  */
 @Inherited
 @Documented

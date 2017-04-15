@@ -1,7 +1,7 @@
 package br.eti.clairton.repository.tenant;
 
 import static br.eti.clairton.repository.Comparators.GREATER_THAN_OR_EQUAL;
-import static br.eti.clairton.repository.Model_.id;
+import static br.eti.clairton.model.Model_.id;
 import static br.eti.clairton.repository.tenant.Operacao_.recurso;
 import static org.junit.Assert.assertEquals;
 

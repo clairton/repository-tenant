@@ -31,7 +31,7 @@ public class RecursoTenant extends RepositoryTenantable<Recurso> {
 
 	@Override
 	public Predicate add(@NotNull final Joinner joinner, final CriteriaBuilder builder, final From<?, Recurso> from, final Object value) {
-		final Join<?, ?> j = joinner.join(builder, from, INNER, aplicacao);
+		final Join<?, ?> j = joinner.join(from, INNER, aplicacao);
 		@SuppressWarnings("unchecked")
 		final Join<Recurso, Aplicacao> join = (Join<Recurso, Aplicacao>) j;
 		return this.builder.run(joinner, builder, join, value);
